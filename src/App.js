@@ -2,10 +2,9 @@ let userMediaData = {}
 const rasterizePdf = new RasterizePdf()
 
 function setup() {
-  // pixelDensity(1)
   rasterizePdf.loadPdfRasterizer()
 
-  var zip = new JSZip();
+  const zip = new JSZip();
 
   downloadFileButton = createButton('download')
     .position(220, 10)
@@ -17,14 +16,13 @@ function setup() {
       zip.generateAsync({
           type: "blob"
         })
-        .then(function(blob) {
+        .then(blob => {
           saveAs(blob, "images.zip");
         });
     })
 }
 
-
-function dataURLtoBlob(dataurl) {
+dataURLtoBlob = dataurl => {
   var arr = dataurl.split(','),
     mime = arr[0].match(/:(.*?);/)[1],
     bstr = atob(arr[1]),

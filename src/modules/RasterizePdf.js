@@ -14,7 +14,7 @@ class RasterizePdf {
     this.uploadButton
     this.showPageNumbers
     this.tempFile
-    this.resolution = 2
+    this.resolution = 1
     this.images = []
     this.vanillaImageBlobs = []
   }
@@ -62,7 +62,6 @@ class RasterizePdf {
       .position(10, 40)
       .changed(() => {
         this.resolution = this.resolutionDropDown.value().split(':')[0]
-        console.log(this.resolution)
         if (this.tempFile) {
           this.gotFile(this.tempFile)
         }
@@ -72,22 +71,28 @@ class RasterizePdf {
     this.resolutionDropDown.option('2:1')
     this.resolutionDropDown.option('3:1')
     this.resolutionDropDown.option('4:1')
-    this.resolutionDropDown.value('2:1')
+    this.resolutionDropDown.value('1:1')
 
     this.resolutionLabel = createDiv("resolution")
-      .position(100, 40)
+      .position(91, 40)
+      .style('font-family', 'arial')
+
     this.uploadButton = createFileInput(this.gotFile)
       .position(10, 70)
+      .style('font-family', 'arial')
 
     this.pdfLoader = createDiv('Load PDF')
       .position(10, 10)
+      .style('font-family', 'arial')
 
     this.pageLoader = createDiv('Rasterizing PDF...')
-      .position(10, 100)
+      .position(20, 110)
       .hide()
+      .style('font-family', 'arial')
 
     this.showPageNumbers = createDiv(``)
-      .position(100, 10)
+      .position(91, 10)
+      .style('font-family', 'arial')
 
     this.pdfPrevButton = createButton('Previous')
       .position(10, 10)
@@ -98,7 +103,7 @@ class RasterizePdf {
       })
 
     this.pdfNextButton = createButton('Next')
-      .position(160, 10)
+      .position(150, 10)
       .hide()
       .mouseClicked(() => {
         if (this.__CURRENT_PAGE != this.__TOTAL_PAGES)
@@ -119,7 +124,6 @@ class RasterizePdf {
 
     this.showPageNumbers.html(`${page_no}/${this.__TOTAL_PAGES}`)
 
-    // Fetch the page
     this.__PDF_DOC.getPage(page_no).then((page) => {
 
       let pdfResolution = page.getViewport({
@@ -149,11 +153,9 @@ class RasterizePdf {
         let img = new p5.Image()
         let vanillaImage = new Image()
         vanillaImage.src = this.__CANVAS.toDataURL()
-
         img.src = this.__CANVAS.toDataURL()
 
         if (!this.images[this.__CURRENT_PAGE - 1]) {
-
           this.vanillaImageBlobs[this.__CURRENT_PAGE - 1] = vanillaImage.src
           this.images[this.__CURRENT_PAGE - 1] = loadImage(img.src, () => {
             if (this.__CURRENT_PAGE < this.__TOTAL_PAGES) {
